@@ -1,0 +1,104 @@
+<form name="postSchema" class="form-horizontal" style="width: 100%">
+
+  <!-- Main Card for new subject -->
+  <md-card md-theme-watch="">
+    <md-toolbar class="md-hue-2">
+      <div class="md-toolbar-tools">
+        <h3>
+          <span>New Subject</span>
+        </h3>
+      </div>
+    </md-toolbar>
+    <!--Content: Form-->
+    <md-card-content style="padding-bottom: 0px;">
+      <div layout="row">
+        <md-input-container  flex style="margin:20px 0 0;">
+          <label style="color:#43687a;font-weight:bold;font-size:19px;">Subject Name</label>
+          <input ng-model="text" autofocus placeholder="my-new-topic-value" required>
+            <md-item-template>
+              <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+            </md-item-template>
+            <div ng-messages="postSchema.autocomplete.$error">
+              <div ng-message="required">This field is required</div>
+            </div>
+          </input>
+        </md-input-container>
+        <div class="md-errors-spacer"></div>
+      </div>
+
+      <div layout="row" layout-align="center center" >
+        <div flex="80" >
+            <b style="color:#43687a" ng-hide="curlme">Schema:</b>
+            <b style="color:#43687a" ng-show="curlme">CURL command:</b>
+        </div>
+        <div flex layout="row" layout-align="end center">
+          <md-switch  ng-model="curlme" ng-show="curlme" style="margin:0;color:#43687a">schema / <b>curl</b></md-switch>
+          <md-switch ng-model="curlme" ng-hide="curlme" style="margin:0;color:#43687a"><b>schema</b> / curl</md-switch>
+        </div>
+      </div>
+
+      <!-- data raw -->
+      <div
+           ng-style="{'background-color':aceBackgroundColor}"
+           ng-hide="curlme" id="newavro"
+           style="height:313px;background-color:rgba(0, 128, 0, 0.04)"
+           name="json"
+           ng-model="newAvroString"
+           ng-readonly="false"
+           ui-ace="{
+            mode: 'json',
+            firstLineNumber: 1,
+            onLoad: newSchemaAceLoaded,
+            onChange: newSchemaAceChanged,
+            showPrintMargin:false,
+            }"
+           valid-json
+      >
+      </div>
+
+      <div ng-show="curlme" id="curlcommand"
+           style="height:313px;"
+           ng-model="curlCommand" ng-readonly="true"
+           ui-ace="{
+            mode: 'batchfile',
+            useWrapMode: true,
+            firstLineNumber: 1,
+            onLoad: curlCommandAceLoaded,
+            showPrintMargin:false,
+            onChange: curlCommandAceChanged
+            }"
+      >
+      </div>
+    </md-card-content>
+
+    <!--Actions-->
+    <md-card-actions style="margin-left:16px;">
+      <i>** This is a sample schema. Please edit! **</i>
+
+      <md-button style="float:right;"
+              ng-disabled="postSchema.json.$error.validJson"
+              ng-hide="allowCreateOrEvolution"
+              ng-click="testCompatibility();"
+              ng-validate="noSubjectName"
+              class=" md-raised"
+              type="submit"
+              aria-label="Test schema compatibility">
+          VALIDATE
+      </md-button>
+      <md-button style="float:right;"
+                 ng-disabled="postSchema.json.$error.validJson"
+                 ng-show="allowCreateOrEvolution"
+              ng-click="registerNewSchema();"
+              ng-validate="noSubjectName"
+              class=" md-raised"
+              type="submit"
+              aria-label="Register new schema">
+        <i class="fa fa-floppy-o ng-scope" aria-hidden="true"></i>
+        {{createOrEvolve}}
+      </md-button><br />
+    </md-card-actions>
+
+
+  </md-card>
+
+</form>

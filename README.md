@@ -1,1 +1,1 @@
-# schema-registry-ui
+Schema registry ui

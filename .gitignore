@@ -1,0 +1,8 @@
+bower_components/
+node_modules/
+dist/
+.idea/
+.DS_Store
+TODO
+npm-debug.log
+*.iml
